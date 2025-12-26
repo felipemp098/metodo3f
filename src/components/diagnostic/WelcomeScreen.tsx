@@ -1,13 +1,36 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Target, Package, TrendingUp, Clock } from "lucide-react";
+import { ArrowRight, Target, Package, TrendingUp, Clock, User } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 interface WelcomeScreenProps {
   onStart: () => void;
 }
 
 export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
+  const { user, signOut } = useAuth();
+
   return (
     <div className="animate-fade-in">
+      {/* Auth Header */}
+      <div className="flex justify-end mb-6">
+        {user ? (
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground">{user.email}</span>
+            <Button variant="ghost" size="sm" onClick={signOut}>
+              Sair
+            </Button>
+          </div>
+        ) : (
+          <Link to="/auth">
+            <Button variant="ghost" size="sm">
+              <User className="w-4 h-4 mr-2" />
+              Entrar
+            </Button>
+          </Link>
+        )}
+      </div>
+
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm mb-6">
           <Clock className="w-3.5 h-3.5" />
