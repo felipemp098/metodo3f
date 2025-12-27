@@ -12,7 +12,7 @@ export function ProgressBar({ current, total }: ProgressBarProps) {
         <span className="text-sm text-muted-foreground">
           Pergunta {current} de {total}
         </span>
-        <span className="text-sm font-medium text-foreground">
+        <span className="text-sm font-medium">
           {Math.round(percentage)}%
         </span>
       </div>

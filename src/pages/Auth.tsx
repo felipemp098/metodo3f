@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '@/hooks/useAuth';
+import { Header } from '@/components/layout/Header';
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,13 +19,16 @@ export default function Auth() {
   
   const { signIn, signUp, user, loading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
 
+  // Redireciona se já estiver logado, ou para a página de onde veio, ou para home
   useEffect(() => {
     if (!loading && user) {
-      navigate('/');
+      const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/';
+      navigate(from, { replace: true });
     }
-  }, [user, loading, navigate]);
+  }, [user, loading, navigate, location]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,24 +95,28 @@ export default function Auth() {
   return (
     <>
       <Helmet>
-        <title>{isLogin ? 'Login' : 'Criar Conta'} | Método 3F</title>
+        <title>{isLogin ? 'Login' : 'Criar Conta'} | IGM</title>
         <meta name="description" content="Acesse sua conta para ver seus diagnósticos estratégicos." />
       </Helmet>
 
-      <div className="min-h-screen flex items-center justify-center bg-background px-4">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-semibold text-foreground mb-2">
-              {isLogin ? 'Acessar conta' : 'Criar conta'}
-            </h1>
-            <p className="text-muted-foreground">
-              {isLogin 
-                ? 'Entre para acessar seus diagnósticos' 
-                : 'Crie sua conta para salvar seus resultados'}
-            </p>
-          </div>
+      <div className="min-h-screen flex flex-col bg-background">
+        <Header />
+        <Breadcrumbs />
+        
+        <main className="flex-1 flex items-center justify-center px-4 py-8">
+          <div className="w-full max-w-md">
+            <div className="text-center mb-8">
+              <h1 className="text-2xl font-semibold text-foreground mb-2">
+                {isLogin ? 'Acessar conta' : 'Criar conta'}
+              </h1>
+              <p className="text-muted-foreground">
+                {isLogin 
+                  ? 'Entre para acessar seus diagnósticos' 
+                  : 'Crie sua conta para salvar seus resultados'}
+              </p>
+            </div>
 
-          <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
+            <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
                 <div className="space-y-2">
@@ -176,8 +185,9 @@ export default function Auth() {
                   : 'Já tem conta? Fazer login'}
               </button>
             </div>
+            </div>
           </div>
-        </div>
+        </main>
       </div>
     </>
   );

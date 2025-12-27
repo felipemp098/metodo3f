@@ -1,47 +1,31 @@
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Target, Package, TrendingUp, Clock, User } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { ArrowRight, Target, Package, TrendingUp, Clock } from "lucide-react";
 
 interface WelcomeScreenProps {
   onStart: () => void;
+  logoUrl?: string | null;
 }
 
-export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
-  const { user, signOut } = useAuth();
-
+export function WelcomeScreen({ onStart, logoUrl }: WelcomeScreenProps) {
   return (
     <div className="animate-fade-in">
-      {/* Auth Header */}
-      <div className="flex justify-end mb-6">
-        {user ? (
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">{user.email}</span>
-            <Button variant="ghost" size="sm" onClick={signOut}>
-              Sair
-            </Button>
-          </div>
-        ) : (
-          <Link to="/auth">
-            <Button variant="ghost" size="sm">
-              <User className="w-4 h-4 mr-2" />
-              Entrar
-            </Button>
-          </Link>
-        )}
-      </div>
 
       <div className="text-center mb-12">
+        {logoUrl && (
+          <div className="mb-6 flex justify-center">
+            <img src={logoUrl} alt="Logo" className="max-h-20 max-w-xs object-contain" />
+          </div>
+        )}
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary text-secondary-foreground text-sm mb-6">
           <Clock className="w-3.5 h-3.5" />
           <span>Tempo estimado: 5 minutos</span>
         </div>
         
-        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
           Diagnóstico Estratégico
         </h1>
-        <p className="text-lg text-primary font-medium mb-4">
-          Método 3F
+        <p className="text-lg font-medium mb-4">
+          IGM
         </p>
         <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed">
           Descubra qual é o principal gargalo que limita seu crescimento rumo aos R$100.000/mês em mentorias e consultorias.
@@ -54,7 +38,7 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
           <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-posicionamento/10 mb-4">
             <Target className="w-5 h-5 text-posicionamento" />
           </div>
-          <h3 className="font-semibold text-foreground mb-2">Posicionamento</h3>
+          <h3 className="font-semibold mb-2">Posicionamento</h3>
           <p className="text-sm text-muted-foreground">
             Clareza da proposta de valor e reconhecimento de autoridade
           </p>
@@ -64,7 +48,7 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
           <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-produto/10 mb-4">
             <Package className="w-5 h-5 text-produto" />
           </div>
-          <h3 className="font-semibold text-foreground mb-2">Produto</h3>
+          <h3 className="font-semibold mb-2">Produto</h3>
           <p className="text-sm text-muted-foreground">
             Estruturação da oferta e capacidade de escala
           </p>
@@ -74,7 +58,7 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
           <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-vendas/10 mb-4">
             <TrendingUp className="w-5 h-5 text-vendas" />
           </div>
-          <h3 className="font-semibold text-foreground mb-2">Vendas</h3>
+          <h3 className="font-semibold mb-2">Vendas</h3>
           <p className="text-sm text-muted-foreground">
             Processo comercial e previsibilidade de receita
           </p>
@@ -86,7 +70,7 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
         <Button
           size="lg"
           onClick={onStart}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground px-8"
+          className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8"
         >
           Iniciar Diagnóstico
           <ArrowRight className="w-4 h-4 ml-2" />

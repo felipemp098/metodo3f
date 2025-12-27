@@ -22,7 +22,7 @@ export function NavigationButtons({
         variant="ghost"
         onClick={onBack}
         disabled={!canGoBack}
-        className="text-muted-foreground hover:text-foreground"
+        className="text-muted-foreground hover:text-secondary hover:bg-secondary/10"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
         Voltar
@@ -31,7 +31,7 @@ export function NavigationButtons({
       <Button
         onClick={onNext}
         disabled={!canGoNext}
-        className="bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="bg-secondary hover:bg-secondary/90 text-secondary-foreground"
       >
         {isLastQuestion ? "Ver Resultado" : "Próximo"}
         <ArrowRight className="w-4 h-4 ml-2" />

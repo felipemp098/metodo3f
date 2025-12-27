@@ -1,4 +1,5 @@
-import { Pillar, pillarLabels, pillarDescriptions } from "@/data/questions";
+import type { Pillar } from "@/lib/types";
+import { pillarLabels, pillarDescriptions } from "@/lib/types";
 import { Target, Package, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -27,11 +28,11 @@ export function PillarCard({ pillar, status, percentage, isBottleneck }: PillarC
     <div
       className={cn(
         "pillar-card relative",
-        isBottleneck && "ring-2 ring-accent/50"
+        isBottleneck && "ring-2 ring-secondary/50"
       )}
     >
       {isBottleneck && (
-        <span className="absolute -top-2 -right-2 px-2 py-0.5 text-xs font-medium rounded bg-accent text-accent-foreground">
+        <span className="absolute -top-2 -right-2 px-2 py-0.5 text-xs font-medium rounded bg-secondary text-secondary-foreground">
           Gargalo
         </span>
       )}
@@ -45,11 +46,11 @@ export function PillarCard({ pillar, status, percentage, isBottleneck }: PillarC
         </span>
       </div>
 
-      <h3 className="text-lg font-semibold text-foreground mb-1">
+      <h3 className="text-lg font-semibold mb-1">
         {pillarLabels[pillar]}
       </h3>
       
-      <p className="text-sm font-medium text-primary mb-2">{status}</p>
+      <p className="text-sm font-medium mb-2">{status}</p>
       
       <p className="text-xs text-muted-foreground">
         {pillarDescriptions[pillar]}

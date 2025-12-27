@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Question, pillarLabels } from "@/data/questions";
+import type { Question } from "@/lib/types";
+import { pillarLabels } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 interface QuestionCardProps {
@@ -19,18 +20,20 @@ export function QuestionCard({ question, selectedOption, onSelect }: QuestionCar
         </span>
       </div>
       
-      <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-8 leading-relaxed">
+      <h2 className="text-xl md:text-2xl font-semibold mb-8 leading-relaxed">
         {question.text}
       </h2>
 
       <div className="space-y-3">
-        {question.options.map((option, index) => {
+        {question.options
+          .sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
+          .map((option, index) => {
           const isSelected = selectedOption === option.points;
           const isHovered = hoveredIndex === index;
 
           return (
             <button
-              key={index}
+              key={option.id || index}
               onClick={() => onSelect(option.points)}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
@@ -38,7 +41,7 @@ export function QuestionCard({ question, selectedOption, onSelect }: QuestionCar
                 "w-full text-left p-4 rounded-lg border transition-all duration-200",
                 "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
                 isSelected
-                  ? "border-primary bg-primary/5 text-foreground"
+                  ? "border-secondary bg-secondary/10"
                   : isHovered
                   ? "border-muted-foreground/30 bg-secondary/50"
                   : "border-border bg-card hover:border-muted-foreground/20"
@@ -50,12 +53,12 @@ export function QuestionCard({ question, selectedOption, onSelect }: QuestionCar
                     "flex-shrink-0 w-5 h-5 rounded-full border-2 mt-0.5 transition-all duration-200",
                     "flex items-center justify-center",
                     isSelected
-                      ? "border-primary bg-primary"
+                      ? "border-secondary bg-secondary"
                       : "border-muted-foreground/40"
                   )}
                 >
                   {isSelected && (
-                    <div className="w-2 h-2 rounded-full bg-primary-foreground" />
+                    <div className="w-2 h-2 rounded-full bg-secondary-foreground" />
                   )}
                 </div>
                 <span className="text-sm md:text-base leading-relaxed">

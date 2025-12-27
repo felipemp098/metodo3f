@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      forms: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          customization_settings: Json | null
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          customization_settings?: Json | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          customization_settings?: Json | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -38,6 +71,79 @@ export type Database = {
         }
         Relationships: []
       }
+      question_options: {
+        Row: {
+          created_at: string
+          id: string
+          order_index: number
+          points: number
+          question_id: string
+          text: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_index?: number
+          points: number
+          question_id: string
+          text: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_index?: number
+          points?: number
+          question_id?: string
+          text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "question_options_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      questions: {
+        Row: {
+          created_at: string
+          form_id: string
+          id: string
+          order_index: number
+          pillar: Database["public"]["Enums"]["pillar_type"]
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          form_id: string
+          id?: string
+          order_index?: number
+          pillar: Database["public"]["Enums"]["pillar_type"]
+          text: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          form_id?: string
+          id?: string
+          order_index?: number
+          pillar?: Database["public"]["Enums"]["pillar_type"]
+          text?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questions_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "forms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -46,7 +152,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      pillar_type: "posicionamento" | "produto" | "vendas"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -173,6 +279,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      pillar_type: ["posicionamento", "produto", "vendas"],
+    },
   },
 } as const
